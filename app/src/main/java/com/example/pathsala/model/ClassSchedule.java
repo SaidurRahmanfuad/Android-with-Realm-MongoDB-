@@ -11,6 +11,9 @@ public class ClassSchedule extends RealmObject {
     String schedule_time;
     String schedule_date;
 
+    public ClassSchedule() {
+    }
+
     public ClassSchedule(int schedule_id, String schedule_day, String schedule_time, String schedule_date) {
         this.schedule_id = schedule_id;
         this.schedule_day = schedule_day;

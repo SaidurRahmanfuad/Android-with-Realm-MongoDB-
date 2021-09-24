@@ -14,6 +14,9 @@ public class Teacher extends RealmObject {
     String t_currentjob;
     String t_jobexperience;
 
+    public Teacher() {
+    }
+
     public Teacher(int t_id, String t_name, String t_address, String t_phone, String t_subexperience, String t_eduqualification, String t_currentjob, String t_jobexperience) {
         this.t_id = t_id;
         this.t_name = t_name;

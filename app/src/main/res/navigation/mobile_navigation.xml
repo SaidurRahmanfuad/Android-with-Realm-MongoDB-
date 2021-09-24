@@ -22,4 +22,9 @@
         android:name="com.example.pathsala.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_mycourse"
+        android:name="com.example.pathsala.ui.courses.CourseFragment"
+        android:label="@string/title_mycourse"
+        tools:layout="@layout/fragment_course" />
 </navigation>
