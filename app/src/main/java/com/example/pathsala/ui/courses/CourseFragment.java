@@ -3,16 +3,22 @@ package com.example.pathsala.ui.courses;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.pathsala.adapters.MyAllCourseAdapter;
 import com.example.pathsala.databinding.BottomsheetCourseCreateBinding;
 import com.example.pathsala.databinding.FragmentCourseBinding;
 import com.example.pathsala.model.Course;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -21,9 +27,14 @@ import io.realm.RealmConfiguration;
  * create by Saidur Rahman
  */
 public class CourseFragment extends Fragment {
+    Realm realm;
     private FragmentCourseBinding FCOUbind;
     BottomsheetCourseCreateBinding bottombind;
     BottomSheetDialog bottomSheetDialog;
+
+    //Read and show Recyclerview
+    List<Course> courseList;
+    MyAllCourseAdapter courseAdapter;
 
     public CourseFragment() {
         // Required empty public constructor
@@ -34,7 +45,7 @@ public class CourseFragment extends Fragment {
                              Bundle savedInstanceState) {
         FCOUbind = FragmentCourseBinding.inflate(getLayoutInflater());
         View v = FCOUbind.getRoot();
-        Realm realm = Realm.getDefaultInstance();
+         realm = Realm.getDefaultInstance();
         decorebottomSheet();
         //Create Course Button Click
         FCOUbind.tvCreatecourse.setOnClickListener(v1 -> {
@@ -84,6 +95,7 @@ public class CourseFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(getActivity(), "Inserted", Toast.LENGTH_SHORT).show();
+                        ShowAllCourse();
                     }
                 }, new Realm.Transaction.OnError() {
                     @Override
@@ -95,15 +107,27 @@ public class CourseFragment extends Fragment {
 
 
         });
+        //read data from realm
+        ShowAllCourse();
         return v;
+    }
+
+    private void ShowAllCourse() {
+
+        courseList=new ArrayList<>();
+        courseList=realm.where(Course.class).findAll();
+        Log.d("TAG", "ShowAllCourse: "+courseList);
+        courseAdapter=new MyAllCourseAdapter(getActivity(),courseList);
+        FCOUbind.rvMyallcourse.setLayoutManager(new LinearLayoutManager(getActivity()));
+        FCOUbind.rvMyallcourse.setAdapter(courseAdapter);
+        courseAdapter.notifyDataSetChanged();
     }
 
     private void decorebottomSheet() {
         bottomSheetDialog = new BottomSheetDialog(getActivity());
         LayoutInflater.from(getActivity());
         bottombind = BottomsheetCourseCreateBinding.inflate(getLayoutInflater());
-        //bottomSheetDialog.setContentView(R.layout.bottomsheet_course_create);
         bottomSheetDialog.setContentView(bottombind.getRoot());
-        // View v=bottombind.getRoot();
+
     }
 }
